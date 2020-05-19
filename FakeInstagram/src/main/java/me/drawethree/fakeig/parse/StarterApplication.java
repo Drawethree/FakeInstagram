@@ -6,13 +6,15 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-package me.drawethree.fakeig;
+package me.drawethree.fakeig.parse;
 
 import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
+
+import me.drawethree.fakeig.R;
 
 
 public class StarterApplication extends Application {
@@ -24,13 +26,14 @@ public class StarterApplication extends Application {
     // Enable Local Datastore.
     Parse.enableLocalDatastore(this);
 
-    // Add your initialization code here
+    //Initialize of Parse server
     Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-            .applicationId(getResources().getString(R.string.parse_app_id))
-            .clientKey(getResources().getString(R.string.parse_client_key))
-            .server("http://18.220.88.92:80/parse/")
+            .applicationId(this.getResources().getString(R.string.parse_app_id))
+            .clientKey(this.getResources().getString(R.string.parse_client_key))
+            .server(this.getResources().getString(R.string.parse_server_link))
             .build()
     );
+
 
     ParseUser.enableAutomaticUser();
 

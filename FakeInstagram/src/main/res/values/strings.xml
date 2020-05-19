@@ -19,15 +19,19 @@
     <string name="enter_your_password">Your password</string>
     <string name="enter_your_username">Your username</string>
     <string name="dark_mode">Dark Mode</string>
-    <string name="author">Ján Kluka 2020</string>
+    <string name="author">Ján Kluka 5ZY021</string>
     <string name="enter_your_email_optional">Your email</string>
     <string name="invalid_input">Username or password cannot be empty!</string>
     <string name="sign_up_success">Sign up successful!</string>
-    <string name="sign_up_fail">Sign up failed!</string>
+    <string name="sign_up_fail">Account already exists for this username!</string>
     <string name="login_success">Login successful!</string>
-    <string name="login_fail">Invalid credintials!</string>
+    <string name="login_fail">Invalid credentials!</string>
     <string name="btn_login">Login</string>
     <string name="or_signup_txt">or Sign Up</string>
     <string name="btn_signup">Sign Up</string>
     <string name="or_login_txt">or Login</string>
+    <string name="users">Users</string>
+    <string name="img_upload_success">Image uploaded!</string>
+    <string name="img_upload_failed">Upload failed!</string>
+    <string name="parse_server_link" translatable="false">http://18.220.88.92:80/parse/</string>
 </resources>

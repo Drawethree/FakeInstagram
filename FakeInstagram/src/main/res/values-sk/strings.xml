@@ -8,16 +8,19 @@
     <string name="enter_your_username">Zadajte meno</string>
     <string name="enter_your_password">Zadajte heslo</string>
     <string name="enter_your_email_optional">Zadajte email</string>
-    <string name="author">Ján Kluka 2020</string>
+    <string name="author">Ján Kluka 5ZY021</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="todo">TODO</string>
     <string name="invalid_input">Meno a heslo nemôžu byť prázdne!</string>
     <string name="sign_up_success">Bol si zaregistrovaný!</string>
-    <string name="sign_up_fail">Registrácia zlyhala</string>
+    <string name="sign_up_fail">Užívateľ s takýmto menom už existuje!</string>
     <string name="login_success">Úspešne prihlásený!</string>
     <string name="login_fail">Zle prihlasovacie údaje!</string>
     <string name="btn_login">Login</string>
     <string name="or_signup_txt">alebo zaregistrovať sa</string>
     <string name="or_login_txt">alebo prihlásiť sa</string>
     <string name="btn_signup">Registrovať</string>
+    <string name="users">Užívatelia</string>
+    <string name="img_upload_success">Obrázok bol nahraný!</string>
+    <string name="img_upload_failed">Obrázok sa nepodarilo nahrať!</string>
 </resources>

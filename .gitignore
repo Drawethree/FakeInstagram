@@ -85,3 +85,7 @@ lint/tmp/
 .gitignore
 .idea/caches/
 FakeInstagram/build/
+src/main/res/layout-v26/
+src/main/res/menu-fr/
+FakeInstagram/src/main/res/layout-v26/
+FakeInstagram/src/main/res/menu-fr/
