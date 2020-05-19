@@ -45,7 +45,6 @@ public class UserFeedActivity extends AppCompatActivity {
                         imageView.setImageBitmap(bitmap);
                         linearLayout.addView(imageView);
                     }
-
                 });
             }
             }

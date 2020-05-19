@@ -7,8 +7,8 @@
   ~ of patent rights can be found in the PATENTS file in the same directory.
   -->
 <resources>
-    <string name="parse_app_id">ddf6b9cf73935df43b2c6ff202a1016b9422f476</string>
-    <string name="parse_client_key">ea9dce7d99a8173d33055393691016efdbcb59e5</string>
+    <string name="parse_app_id" translatable="false">ddf6b9cf73935df43b2c6ff202a1016b9422f476</string>
+    <string name="parse_client_key" translatable="false">ea9dce7d99a8173d33055393691016efdbcb59e5</string>
 
     <string name="app_name">Fake Instagram</string>
     <string name="share">Share</string>
@@ -16,6 +16,18 @@
     <string name="todo">TODO</string>
     <string name="or_login">or Login</string>
     <string name="sign_up">Sign Up</string>
-    <string name="enter_your_password">Enter your password...</string>
-    <string name="enter_your_username">Enter your username...</string>
+    <string name="enter_your_password">Your password</string>
+    <string name="enter_your_username">Your username</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="author">Ján Kluka 2020</string>
+    <string name="enter_your_email_optional">Your email</string>
+    <string name="invalid_input">Username or password cannot be empty!</string>
+    <string name="sign_up_success">Sign up successful!</string>
+    <string name="sign_up_fail">Sign up failed!</string>
+    <string name="login_success">Login successful!</string>
+    <string name="login_fail">Invalid credintials!</string>
+    <string name="btn_login">Login</string>
+    <string name="or_signup_txt">or Sign Up</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="or_login_txt">or Login</string>
 </resources>

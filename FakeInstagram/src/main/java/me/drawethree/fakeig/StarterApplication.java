@@ -28,7 +28,7 @@ public class StarterApplication extends Application {
     Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
             .applicationId(getResources().getString(R.string.parse_app_id))
             .clientKey(getResources().getString(R.string.parse_client_key))
-            .server("http://18.218.51.151:80/parse/")
+            .server("http://18.220.88.92:80/parse/")
             .build()
     );
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fake Instagram</string>
+    <string name="sign_up">Registovať</string>
+    <string name="share">Zdielať foto</string>
+    <string name="or_login">alebo prihlásiť sa</string>
+    <string name="logout">Odhlásiť sa</string>
+    <string name="enter_your_username">Zadajte meno</string>
+    <string name="enter_your_password">Zadajte heslo</string>
+    <string name="enter_your_email_optional">Zadajte email</string>
+    <string name="author">Ján Kluka 2020</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="todo">TODO</string>
+    <string name="invalid_input">Meno a heslo nemôžu byť prázdne!</string>
+    <string name="sign_up_success">Bol si zaregistrovaný!</string>
+    <string name="sign_up_fail">Registrácia zlyhala</string>
+    <string name="login_success">Úspešne prihlásený!</string>
+    <string name="login_fail">Zle prihlasovacie údaje!</string>
+    <string name="btn_login">Login</string>
+    <string name="or_signup_txt">alebo zaregistrovať sa</string>
+    <string name="or_login_txt">alebo prihlásiť sa</string>
+    <string name="btn_signup">Registrovať</string>
+</resources>

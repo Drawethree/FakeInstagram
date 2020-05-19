@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/share" android:id="@+id/share" ></item>
-    <item android:title="@string/logout" android:id="@+id/logout"></item>
+    <item
+        android:id="@+id/share"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="@string/share"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/logout"
+        android:icon="@android:drawable/btn_dialog"
+        android:title="@string/logout"
+        app:showAsAction="always"></item>
 
 </menu>

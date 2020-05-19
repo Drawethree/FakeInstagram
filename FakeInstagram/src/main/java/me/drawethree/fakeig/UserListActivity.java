@@ -57,13 +57,10 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
 
-        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(UserListActivity.this, UserFeedActivity.class);
-                i.putExtra("username", names.get(position));
-                startActivity(i);
-            }
+        userListView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent i = new Intent(UserListActivity.this, UserFeedActivity.class);
+            i.putExtra("username", names.get(position));
+            startActivity(i);
         });
     }
 
@@ -106,7 +103,6 @@ public class UserListActivity extends AppCompatActivity {
 
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
-
 
                 ParseFile file = new ParseFile(UUID.randomUUID().toString() + ".png",outputStream.toByteArray());
                 ParseObject object = new ParseObject("image");
