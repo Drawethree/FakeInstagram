@@ -47,9 +47,16 @@ public class UserListActivity extends AppCompatActivity {
 
         this.fab.setOnClickListener(view -> this.requestPhoto());
 
-        this.refreshUsers();
+        if (this.getIntent().getBooleanExtra("login", false)) {
 
-        Snackbar.make(this.userListView, R.string.login_success, Snackbar.LENGTH_LONG).show();
+            ParseUser.getCurrentUser().put("online", true);
+            ParseUser.getCurrentUser().saveInBackground();
+
+            this.getIntent().removeExtra("login");
+            Snackbar.make(this.userListView, R.string.login_success, Snackbar.LENGTH_LONG).show();
+        }
+
+        this.refreshUsers();
     }
 
     private void refreshUsers() {

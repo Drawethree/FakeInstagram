@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ParseAnalytics.trackAppOpenedInBackground(this.getIntent());
         this.createNotificationChannel();
         //this.setLanguageForApp(this.getPreferences(MODE_PRIVATE).getString("language", "sk"), false);
         this.setContentView(R.layout.activity_main);
@@ -61,20 +62,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.passwordEditText.setOnKeyListener(this);
 
 
-        ParseAnalytics.trackAppOpenedInBackground(this.getIntent());
-
         //auto-login
         if (this.getIntent().getBooleanExtra("logout", false)) {
             Snackbar.make(this.emailEditText, R.string.logout_success, Snackbar.LENGTH_LONG).show();
         } else {
             if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
-
-                ParseUser.getCurrentUser().put("online", true);
-                ParseUser.getCurrentUser().saveInBackground();
-
                 this.showUserlist();
             }
         }
+
     }
 
     @Override
@@ -83,11 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (item.getItemId()) {
                 case R.id.menuEnglish:
                     this.setLanguageForApp("en");
-                    Snackbar.make(this.usernameEditText, R.string.language_change, Snackbar.LENGTH_LONG).show();
                     break;
                 case R.id.menuSlovak:
                     this.setLanguageForApp("sk");
-                    Snackbar.make(this.usernameEditText, R.string.language_change, Snackbar.LENGTH_LONG).show();
                     break;
             }
         }
@@ -124,9 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (e == null) {
                         Snackbar.make(view, R.string.sign_up_success, Snackbar.LENGTH_LONG).show();
 
-                        user.put("online", true);
-                        user.saveInBackground();
-
                         this.showUserlist();
                     } else {
                         Snackbar.make(view, R.string.sign_up_fail, Snackbar.LENGTH_LONG).show();
@@ -138,10 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ParseUser.logInInBackground(this.usernameEditText.getText().toString(), this.passwordEditText.getText().toString(), (user, e) -> {
 
                 if (user != null) {
-
-                    ParseUser.getCurrentUser().put("online", true);
-                    ParseUser.getCurrentUser().saveInBackground();
-
                     this.showUserlist();
                 } else {
                     Snackbar.make(view, R.string.login_fail, Snackbar.LENGTH_LONG).show();
@@ -191,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showUserlist() {
         Intent i = new Intent(this, UserListActivity.class);
+        i.putExtra("login", true);
         this.startActivity(i);
     }
 
@@ -220,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.finish();
         startActivity(new Intent(this, MainActivity.class));
+        Snackbar.make(this.usernameEditText, R.string.language_change, Snackbar.LENGTH_LONG).show();
 
     }
 
@@ -228,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("language", this.currentLanguage);
+        editor.putBoolean("signUpMode", this.signUpMode);
+        editor.commit();
         super.onPause();
     }
 

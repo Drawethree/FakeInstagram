@@ -91,7 +91,12 @@ public class UserFeedActivity extends AppCompatActivity {
             if (e == null) {
                 for (ParseObject obj : objects) {
                     ParseFile file = (ParseFile) obj.get("image");
-                    Objects.requireNonNull(file).getDataInBackground((data, e1) -> {
+
+                    if (file == null) {
+                        continue;
+                    }
+
+                    file.getDataInBackground((data, e1) -> {
                         if (e1 == null && data != null) {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                             ImageView imageView = new ImageView(this);
