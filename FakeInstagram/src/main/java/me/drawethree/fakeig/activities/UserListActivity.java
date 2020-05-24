@@ -1,20 +1,23 @@
-package me.drawethree.fakeig;
+package me.drawethree.fakeig.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import me.drawethree.fakeig.R;
+import me.drawethree.fakeig.adapters.UserListAdapter;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -22,15 +25,15 @@ import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class UserListActivity extends AppCompatActivity {
 
-    private static final int SHARE_REQUEST_CODE = 485447;
+    private static final int SHARE_REQUEST_CODE = 1;
 
 
     private ListView userListView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,9 @@ public class UserListActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_user_list);
         this.setTitle(R.string.users);
         this.userListView = this.findViewById(R.id.userListView);
+        this.fab = this.findViewById(R.id.fab);
 
-        ArrayList<String> names = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, names);
+        this.fab.setOnClickListener(view -> this.requestPhoto());
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
@@ -48,35 +51,50 @@ public class UserListActivity extends AppCompatActivity {
 
         query.findInBackground((objects, e) -> {
             if (e == null && !objects.isEmpty()) {
-                for (ParseUser u : objects) {
-                    names.add(u.getUsername());
-                }
-                UserListActivity.this.userListView.setAdapter(adapter);
+                UserListActivity.this.userListView.setAdapter(new UserListAdapter(this, objects));
             }
         });
 
         this.userListView.setOnItemClickListener((parent, view, position, id) -> {
             Intent i = new Intent(UserListActivity.this, UserFeedActivity.class);
-            i.putExtra("username", names.get(position));
+            i.putExtra("username", ((TextView) view.findViewById(R.id.userName)).getText());
             this.startActivity(i);
         });
+
+        Snackbar.make(this.userListView, R.string.login_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = this.getMenuInflater();
-        menuInflater.inflate(R.menu.share_menu, menu);
+        menuInflater.inflate(R.menu.user_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share) {
-            this.requestPhoto();
-        } else if (item.getItemId() == R.id.logout) {
-            ParseUser.logOut();
-            Intent i = new Intent(this, MainActivity.class);
-            this.startActivity(i);
+        if (item.getItemId() == R.id.logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.logout_confirm);
+            builder.setIcon(R.drawable.ic_account_circle_black_24dp);
+            builder.setPositiveButton(R.string.yes, (dialog, id) -> {
+
+
+                ParseUser.getCurrentUser().put("online", false);
+                ParseUser.getCurrentUser().saveInBackground();
+
+                ParseUser.logOut();
+                Snackbar.make(userListView, R.string.logout_success, Snackbar.LENGTH_LONG).show();
+                Intent i = new Intent(UserListActivity.this, MainActivity.class);
+                UserListActivity.this.startActivity(i);
+            });
+
+            builder.setNegativeButton(R.string.no, (dialog, id) -> {
+
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -99,16 +117,16 @@ public class UserListActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 
                 ParseFile file = new ParseFile(UUID.randomUUID().toString() + ".png", outputStream.toByteArray());
+
                 ParseObject object = new ParseObject("image");
                 object.put("image", file);
                 object.put("username", ParseUser.getCurrentUser().getUsername());
 
                 object.saveInBackground(e -> {
                     if (e == null) {
-                        Toast.makeText(UserListActivity.this, R.string.img_upload_success, Toast.LENGTH_LONG).show();
+                        Snackbar.make(userListView, R.string.img_upload_success, Snackbar.LENGTH_LONG).show();
                     } else {
-                        Log.i("ImgUpload", e.getLocalizedMessage());
-                        Toast.makeText(UserListActivity.this, R.string.img_upload_failed, Toast.LENGTH_LONG).show();
+                        Snackbar.make(userListView, R.string.img_upload_failed, Snackbar.LENGTH_LONG).show();
                     }
                 });
             } catch (IOException e) {

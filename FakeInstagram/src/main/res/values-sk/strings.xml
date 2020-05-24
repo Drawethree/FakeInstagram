@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fake Instagram</string>
-    <string name="sign_up">Registovať</string>
+    <string name="sign_up">Registrovať</string>
     <string name="share">Zdielať foto</string>
     <string name="or_login">alebo prihlásiť sa</string>
     <string name="logout">Odhlásiť sa</string>
@@ -16,11 +16,21 @@
     <string name="sign_up_fail">Užívateľ s takýmto menom už existuje!</string>
     <string name="login_success">Úspešne prihlásený!</string>
     <string name="login_fail">Zle prihlasovacie údaje!</string>
-    <string name="btn_login">Login</string>
+    <string name="btn_login">Prihlásiť Sa</string>
     <string name="or_signup_txt">alebo zaregistrovať sa</string>
     <string name="or_login_txt">alebo prihlásiť sa</string>
     <string name="btn_signup">Registrovať</string>
     <string name="users">Užívatelia</string>
     <string name="img_upload_success">Obrázok bol nahraný!</string>
-    <string name="img_upload_failed">Obrázok sa nepodarilo nahrať!</string>
+    <string name="img_upload_failed">Obrázok sa nepodarilo nahrať! Skúste to znova.</string>
+    <string name="user_feed_title">Fotky používateľa %1$s</string>
+    <string name="logout_success">Bol si odhlásený!</string>
+    <string name="logout_confirm">Chceš sa naozaj odhlásiť ?</string>
+    <string name="yes">Áno</string>
+    <string name="no">Nie</string>
+    <string name="add_image">Pridať obrázok</string>
+    <string name="language_change">Jazyk bol zmenený!</string>
+    <string name="logout_failed">Nepodarilo sa odhlásiť! Skúste znova.</string>
+    <string name="status_online">Online</string>
+    <string name="status_offline">Offline</string>
 </resources>

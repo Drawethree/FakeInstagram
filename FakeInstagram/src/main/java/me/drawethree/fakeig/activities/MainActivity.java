@@ -1,20 +1,23 @@
-package me.drawethree.fakeig;
+package me.drawethree.fakeig.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import me.drawethree.fakeig.R;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 0 - SignUp
     // 1 - LogIn
     private boolean signUpMode;
+    private String currentLanguage;
 
     private Button signUpBtn;
     private TextView changeModeTextView;
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setLanguageForApp("sk");
+        // this.setLanguageForApp(this.getPreferences(MODE_PRIVATE).getString("language", "sk"));
         this.setContentView(R.layout.activity_main);
         this.setTitle(R.string.app_name);
 
@@ -46,20 +50,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.passwordEditText = this.findViewById(R.id.passwordInput);
         this.usernameEditText = this.findViewById(R.id.usernameInput);
         this.emailEditText = this.findViewById(R.id.emailInput);
+
         this.changeModeTextView.setOnClickListener(this);
         this.passwordEditText.setOnKeyListener(this);
 
-        if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
-            this.showUserlist();
-        }
 
         ParseAnalytics.trackAppOpenedInBackground(this.getIntent());
+
+        //auto-login
+        if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
+
+            ParseUser.getCurrentUser().put("online", true);
+            ParseUser.getCurrentUser().saveInBackground();
+
+            this.showUserlist();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item != null) {
+            switch (item.getItemId()) {
+                case R.id.menuEnglish:
+                    this.setLanguageForApp("en");
+                    Snackbar.make(this.usernameEditText, R.string.language_change, Snackbar.LENGTH_LONG).show();
+                    break;
+                case R.id.menuSlovak:
+                    this.setLanguageForApp("sk");
+                    Snackbar.make(this.usernameEditText, R.string.language_change, Snackbar.LENGTH_LONG).show();
+                    break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -68,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Sign Up
         if (!this.signUpMode) {
             if (this.usernameEditText.getText().toString().isEmpty() || this.passwordEditText.getText().toString().isEmpty()) {
-                Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_LONG).show();
+                Snackbar.make(view, R.string.invalid_input, Snackbar.LENGTH_LONG).show();
             } else {
 
                 ParseUser user = new ParseUser();
@@ -80,24 +108,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     user.setEmail(emailEditText.getText().toString());
                 }
 
+                //Zaregistruj užívateľa do DB
                 user.signUpInBackground(e -> {
+                    Snackbar snackbar;
+
                     if (e == null) {
-                        Toast.makeText(MainActivity.this, R.string.sign_up_success, Toast.LENGTH_LONG).show();
+                        snackbar = Snackbar.make(view, R.string.sign_up_success, Snackbar.LENGTH_LONG);
+
+                        snackbar.show();
+
+                        user.put("online", true);
+                        user.saveInBackground();
+
                         this.showUserlist();
                     } else {
-                        Toast.makeText(MainActivity.this, R.string.sign_up_fail, Toast.LENGTH_LONG).show();
-                        Log.i("SignUp", e.getLocalizedMessage());
+                        snackbar = Snackbar.make(view, R.string.sign_up_fail, Snackbar.LENGTH_LONG);
+
+                        snackbar.show();
                     }
                 });
             }
             //Log In
         } else {
             ParseUser.logInInBackground(this.usernameEditText.getText().toString(), this.passwordEditText.getText().toString(), (user, e) -> {
+
                 if (user != null) {
-                    Toast.makeText(MainActivity.this, R.string.login_success, Toast.LENGTH_LONG).show();
+
+                    ParseUser.getCurrentUser().put("online", true);
+                    ParseUser.getCurrentUser().saveInBackground();
+
                     this.showUserlist();
                 } else {
-                    Toast.makeText(MainActivity.this, R.string.login_fail, Toast.LENGTH_LONG).show();
+                    Snackbar.make(view, R.string.login_fail, Snackbar.LENGTH_LONG).show();
                 }
             });
         }
@@ -127,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (v.equals(this.passwordEditText) && keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
             this.signUpOrLogin(v);
         }
         return false;
@@ -140,6 +182,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setLanguageForApp(String language) {
 
+        if (this.currentLanguage != null && this.currentLanguage.equals(language)) {
+            return;
+        }
+
+        this.currentLanguage = language;
+
         Locale locale;
         if (language.equals("not-set")) {
             locale = Locale.getDefault();
@@ -149,9 +197,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Locale.setDefault(locale);
 
-        Configuration config = new Configuration();
+        Configuration config = getResources().getConfiguration();
         config.locale = locale;
-        this.getBaseContext().getResources().updateConfiguration(config,
+
+        //Update strings
+        this.getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
+
+        this.finish();
+        startActivity(new Intent(this, MainActivity.class));
+
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("language", this.currentLanguage);
+        super.onPause();
     }
 }

@@ -1,14 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2015-present, Parse, LLC.
-  ~ All rights reserved.
-  ~
-  ~ This source code is licensed under the BSD-style license found in the
-  ~ LICENSE file in the root directory of this source tree. An additional grant
-  ~ of patent rights can be found in the PATENTS file in the same directory.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="parse_app_id" translatable="false">ddf6b9cf73935df43b2c6ff202a1016b9422f476</string>
-    <string name="parse_client_key" translatable="false">ea9dce7d99a8173d33055393691016efdbcb59e5</string>
+    <string name="parse_app_id" translatable="false">myappID</string>
+    <string name="parse_client_key" translatable="false">w1rW9cCKZBlY</string>
 
     <string name="app_name">Fake Instagram</string>
     <string name="share">Share</string>
@@ -32,6 +25,18 @@
     <string name="or_login_txt">or Login</string>
     <string name="users">Users</string>
     <string name="img_upload_success">Image uploaded!</string>
-    <string name="img_upload_failed">Upload failed!</string>
-    <string name="parse_server_link" translatable="false">http://18.220.88.92:80/parse/</string>
+    <string name="img_upload_failed">Upload failed! Please try again.</string>
+    <string name="parse_server_link" translatable="false">http://52.47.122.153:80/parse/</string>
+    <string name="user_feed_title">%1$s\'s Feed</string>
+    <string name="logout_success">Successfully logged out!</string>
+    <string name="logout_confirm">Are you sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_image">Add Image</string>
+    <string name="slovak" translatable="false">Slovenský</string>
+    <string name="english" translatable="false">English</string>
+    <string name="language_change">Language changed!</string>
+    <string name="logout_failed">Logout Failed! Please try again.</string>
+    <string name="status_online">Online</string>
+    <string name="status_offline">Offline</string>
 </resources>

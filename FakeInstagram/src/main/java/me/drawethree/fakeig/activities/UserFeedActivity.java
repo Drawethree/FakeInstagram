@@ -1,6 +1,7 @@
-package me.drawethree.fakeig;
+package me.drawethree.fakeig.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import me.drawethree.fakeig.R;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,8 +30,7 @@ public class UserFeedActivity extends AppCompatActivity {
         Intent i = this.getIntent();
         String userSelected = i.getStringExtra("username");
 
-        //TODO: add to string resources
-        this.setTitle(userSelected + "'s Feed");
+        this.setTitle(this.getResources().getString(R.string.user_feed_title, userSelected));
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("image");
         query.whereEqualTo("username", userSelected);
