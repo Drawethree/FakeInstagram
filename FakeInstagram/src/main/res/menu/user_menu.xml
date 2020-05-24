@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/refresh"
+        android:title="@string/refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        app:showAsAction="always"></item>
+    <item
         android:id="@+id/logout"
         android:icon="@android:drawable/btn_dialog"
         android:title="@string/logout"

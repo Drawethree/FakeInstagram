@@ -33,4 +33,7 @@
     <string name="logout_failed">Nepodarilo sa odhlásiť! Skúste znova.</string>
     <string name="status_online">Online</string>
     <string name="status_offline">Offline</string>
+    <string name="notification_user_upload">Používateľ %1$s nahral novú fotku!</string>
+    <string name="refresh">Obnoviť</string>
+    <string name="img_upload_progress">Nahrávam...</string>
 </resources>

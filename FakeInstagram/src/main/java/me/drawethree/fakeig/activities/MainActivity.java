@@ -1,15 +1,20 @@
 package me.drawethree.fakeig.activities;
 
+import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // this.setLanguageForApp(this.getPreferences(MODE_PRIVATE).getString("language", "sk"));
+        this.createNotificationChannel();
+        //this.setLanguageForApp(this.getPreferences(MODE_PRIVATE).getString("language", "sk"), false);
         this.setContentView(R.layout.activity_main);
         this.setTitle(R.string.app_name);
 
@@ -58,12 +64,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ParseAnalytics.trackAppOpenedInBackground(this.getIntent());
 
         //auto-login
-        if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
+        if (this.getIntent().getBooleanExtra("logout", false)) {
+            Snackbar.make(this.emailEditText, R.string.logout_success, Snackbar.LENGTH_LONG).show();
+        } else {
+            if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
 
-            ParseUser.getCurrentUser().put("online", true);
-            ParseUser.getCurrentUser().saveInBackground();
+                ParseUser.getCurrentUser().put("online", true);
+                ParseUser.getCurrentUser().saveInBackground();
 
-            this.showUserlist();
+                this.showUserlist();
+            }
         }
     }
 
@@ -110,21 +120,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //Zaregistruj užívateľa do DB
                 user.signUpInBackground(e -> {
-                    Snackbar snackbar;
 
                     if (e == null) {
-                        snackbar = Snackbar.make(view, R.string.sign_up_success, Snackbar.LENGTH_LONG);
-
-                        snackbar.show();
+                        Snackbar.make(view, R.string.sign_up_success, Snackbar.LENGTH_LONG).show();
 
                         user.put("online", true);
                         user.saveInBackground();
 
                         this.showUserlist();
                     } else {
-                        snackbar = Snackbar.make(view, R.string.sign_up_fail, Snackbar.LENGTH_LONG);
-
-                        snackbar.show();
+                        Snackbar.make(view, R.string.sign_up_fail, Snackbar.LENGTH_LONG).show();
                     }
                 });
             }
@@ -170,9 +175,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (v.equals(this.passwordEditText) && keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+            this.hideKeyboard();
             this.signUpOrLogin(v);
         }
         return false;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) this.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(), 0);
     }
 
     private void showUserlist() {
@@ -215,5 +229,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("language", this.currentLanguage);
         super.onPause();
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("FakeInstagram", "FakeInstagram", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Notification channel for FakeInstagram");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

@@ -39,4 +39,7 @@
     <string name="logout_failed">Logout Failed! Please try again.</string>
     <string name="status_online">Online</string>
     <string name="status_offline">Offline</string>
+    <string name="notification_user_upload">User %1$s has uploaded a new photo!</string>
+    <string name="refresh">Refresh</string>
+    <string name="img_upload_progress">Uploading...</string>
 </resources>
