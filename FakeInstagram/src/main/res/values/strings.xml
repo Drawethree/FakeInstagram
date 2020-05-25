@@ -26,7 +26,7 @@
     <string name="users">Users</string>
     <string name="img_upload_success">Image uploaded!</string>
     <string name="img_upload_failed">Upload failed! Please try again.</string>
-    <string name="parse_server_link" translatable="false">http://52.47.122.153:80/parse/</string>
+    <string name="parse_server_link" translatable="false">http://15.188.194.98:80/parse/</string>
     <string name="user_feed_title">%1$s\'s Feed</string>
     <string name="logout_success">Successfully logged out!</string>
     <string name="logout_confirm">Are you sure you want to logout?</string>
