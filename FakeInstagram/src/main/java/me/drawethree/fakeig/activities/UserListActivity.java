@@ -30,6 +30,9 @@ import androidx.core.app.NotificationManagerCompat;
 import me.drawethree.fakeig.R;
 import me.drawethree.fakeig.adapters.UserListAdapter;
 
+/**
+ * Aktivita na zobrazenie vsetkych uzivatelov a ich status.
+ */
 public class UserListActivity extends AppCompatActivity {
 
     private static final int UPLOAD_REQUEST_CODE = 4562;
@@ -59,6 +62,9 @@ public class UserListActivity extends AppCompatActivity {
         this.refreshUsers();
     }
 
+    /**
+     * Metoda na ziskanie vsetkych uzivatelov z databazy a na vyplnenie ListViewu tymito uzivatelmi.
+     */
     private void refreshUsers() {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.addAscendingOrder("username");
@@ -76,6 +82,11 @@ public class UserListActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Metoda na vyplnenie menu cez MenuInflater.
+     * @param menu - Menu na vyplnenie
+     * @return true - zobrazi menu, false - nezobrazi
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = this.getMenuInflater();
@@ -83,6 +94,12 @@ public class UserListActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Metoda na spracovanie kliknutia polozky v menu aktivity. V tomto pripade buď odhlasi aktualneho pouzivatela, alebo znovu nacita zoznam vsetkych uzivatelov.
+     * @param item - Polozka menu, ktora bola zvolena
+     * @return Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout) {
@@ -115,6 +132,9 @@ public class UserListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda na spustenie Intentu ktory si vypyta od uzivatela vyber hociakej fotky.
+     */
     private void requestPhoto() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.setType("image/*");
@@ -156,6 +176,11 @@ public class UserListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Metoda na poslanie notifikacie po uspesnom nahrati obrazku.
+     * cerpané z https://developer.android.com/training/notify-user/build-notification
+     * @param user - Uzivatel ktory nahral fotku
+     */
     private void sendUploadNotification(ParseUser user) {
         Intent intent = new Intent(this, UserFeedActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

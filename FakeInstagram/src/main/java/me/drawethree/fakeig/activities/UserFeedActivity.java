@@ -22,6 +22,9 @@ import com.parse.ParseUser;
 
 import java.util.Objects;
 
+/**
+ * Aktivita na zobrazenie uzivatelskych fotiek.
+ */
 public class UserFeedActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout;
@@ -43,6 +46,11 @@ public class UserFeedActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metoda na vyplnenie menu cez MenuInflater.
+     * @param menu - Menu na vyplnenie
+     * @return true - zobrazí menu, false - nezobrazí
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = this.getMenuInflater();
@@ -50,6 +58,12 @@ public class UserFeedActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Metoda na spracovanie kliknutia polozky v menu aktivity. V tomto pripade bud znovu nacita obrazky pouzivatela, alebo odhlasi aktualneho prihlaseneho pouzivatela.
+     * @param item - Polozka menu, ktora bola zvolena
+     * @return Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout) {
@@ -82,6 +96,10 @@ public class UserFeedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda na nacitanie fotiek uzivatela a zobrazenie ich do layoutu.
+     * @param userSelected - Meno pouzivatela
+     */
     private void loadFeed(String userSelected) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("image");
         query.whereEqualTo("username", userSelected);

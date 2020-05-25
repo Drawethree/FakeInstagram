@@ -29,6 +29,9 @@ import com.parse.ParseUser;
 import java.util.Locale;
 
 
+/**
+ * Hlavna aktivita aplikacie. Umoznuje prihlasit sa / zaregistrovat sa alebo zmenit jazyk aplikacie.
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener {
 
     // 0 - SignUp
@@ -73,21 +76,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * Metoda na spracovanie kliknutia polozky v menu aktivity. V tomto pripade nastavi jazyk aplikacie.
+     *
+     * @param item - Polozka menu, ktora bola zvolena
+     * @return Return false to allow normal menu processing to
+     * proceed, true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item != null) {
-            switch (item.getItemId()) {
-                case R.id.menuEnglish:
-                    this.setLanguageForApp("en");
-                    break;
-                case R.id.menuSlovak:
-                    this.setLanguageForApp("sk");
-                    break;
-            }
+        switch (item.getItemId()) {
+            case R.id.menuEnglish:
+                this.setLanguageForApp("en");
+                break;
+            case R.id.menuSlovak:
+                this.setLanguageForApp("sk");
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda na vyplnenie menu cez MenuInflater.
+     *
+     * @param menu - Menu na vyplnenie
+     * @return true - zobrazi menu, false - nezobrazi
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = new MenuInflater(this);
@@ -95,6 +109,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Metoda na prihlasenie / registraciu uživatela.
+     * @param view - View ktory spustil túto akciu
+     */
     public void signUpOrLogin(View view) {
 
         //Sign Up
@@ -112,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     user.setEmail(emailEditText.getText().toString());
                 }
 
-                //Zaregistruj užívateľa do DB
+                //Zaregistruj uživatela do DB
                 user.signUpInBackground(e -> {
 
                     if (e == null) {
@@ -138,6 +156,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    /**
+     * Metoda na zmenenie modu prihlasenia / registracie
+     * @param v - View ktory bol kliknuty
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.changeMode) {
@@ -159,15 +181,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     *  Metoda na spracovanie stlacenia klavesy na kvavesnici
+     * @param view - View v ktorom bolo tlacitko na klavesnici zmacknute
+     * @param keyCode - ciselny kod zmacknuteho tlacitka
+     * @param event - Akcia pri stlaceni
+     * @return
+     */
     @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (v.equals(this.passwordEditText) && keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+    public boolean onKey(View view, int keyCode, KeyEvent event) {
+        if (view.equals(this.passwordEditText) && keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
             this.hideKeyboard();
-            this.signUpOrLogin(v);
+            this.signUpOrLogin(view);
         }
         return false;
     }
 
+    /**
+     * Metoda na skrytie klavesnice
+     */
     private void hideKeyboard() {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) this.getSystemService(
@@ -176,12 +208,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.getCurrentFocus().getWindowToken(), 0);
     }
 
+    /**
+     * Metoda na spustenie aktivity UserListActivity.
+     */
     private void showUserlist() {
         Intent i = new Intent(this, UserListActivity.class);
         i.putExtra("login", true);
         this.startActivity(i);
     }
 
+    /**
+     * Metoda na nastavenie jazyka aplikacie.
+     *
+     * @param language en,sk,not-set
+     */
     private void setLanguageForApp(String language) {
 
         if (this.currentLanguage != null && this.currentLanguage.equals(language)) {
@@ -222,6 +262,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
     }
 
+    /**
+     * Metoda na vytvorenie notifikacneho kanala pre android API 26 a vyssie.
+     * cerpane z https://developer.android.com/training/notify-user/build-notification
+     */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("FakeInstagram", "FakeInstagram", NotificationManager.IMPORTANCE_DEFAULT);

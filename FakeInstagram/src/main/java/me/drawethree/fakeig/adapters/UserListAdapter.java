@@ -14,12 +14,27 @@ import java.util.List;
 
 import me.drawethree.fakeig.R;
 
+/**
+ * Vlastny adapter pre uzivatelov
+ */
 public class UserListAdapter extends ArrayAdapter<ParseUser> {
 
+    /**
+     * Konstruktor UserListAdapter.
+     * @param context - application context
+     * @param users - Zoznam uzivatelov
+     */
     public UserListAdapter(Context context, List<ParseUser> users) {
         super(context, 0, users);
     }
 
+    /**
+     * Metoda getView vyplni a vrati layout jedneho itemu v adapteri.
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return Vyplneny view udajmi o ParseUser.
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
