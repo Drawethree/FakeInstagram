@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //auto-login
         if (this.getIntent().getBooleanExtra("logout", false)) {
+            this.getIntent().removeExtra("logout");
             Snackbar.make(this.emailEditText, R.string.logout_success, Snackbar.LENGTH_LONG).show();
         } else {
             if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().getUsername() != null) {
