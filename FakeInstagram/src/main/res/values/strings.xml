@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="parse_app_id" translatable="false">myappID</string>
-    <string name="parse_client_key" translatable="false">w1rW9cCKZBlY</string>
+    <string name="parse_client_key" translatable="false">9tNca05rwb4f</string>
 
     <string name="app_name">Fake Instagram</string>
     <string name="share">Share</string>
@@ -26,7 +26,7 @@
     <string name="users">Users</string>
     <string name="img_upload_success">Image uploaded!</string>
     <string name="img_upload_failed">Upload failed! Please try again.</string>
-    <string name="parse_server_link" translatable="false">http://15.188.194.98:80/parse/</string>
+    <string name="parse_server_link" translatable="false">http://35.180.0.108:80/parse/</string>
     <string name="user_feed_title">%1$s\'s Feed</string>
     <string name="logout_success">Successfully logged out!</string>
     <string name="logout_confirm">Are you sure you want to logout?</string>

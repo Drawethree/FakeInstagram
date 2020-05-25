@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,10 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.parse.GetDataCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.ProgressCallback;
 
 import java.util.Objects;
 
@@ -39,6 +44,7 @@ public class UserFeedActivity extends AppCompatActivity {
         Intent i = this.getIntent();
 
         this.userSelected = i.getStringExtra("username");
+        Log.i("USER-FEED", this.userSelected);
 
         this.setTitle(this.getResources().getString(R.string.user_feed_title, this.userSelected));
 
@@ -48,6 +54,7 @@ public class UserFeedActivity extends AppCompatActivity {
 
     /**
      * Metoda na vyplnenie menu cez MenuInflater.
+     *
      * @param menu - Menu na vyplnenie
      * @return true - zobrazí menu, false - nezobrazí
      */
@@ -60,9 +67,10 @@ public class UserFeedActivity extends AppCompatActivity {
 
     /**
      * Metoda na spracovanie kliknutia polozky v menu aktivity. V tomto pripade bud znovu nacita obrazky pouzivatela, alebo odhlasi aktualneho prihlaseneho pouzivatela.
+     *
      * @param item - Polozka menu, ktora bola zvolena
      * @return Return false to allow normal menu processing to
-     *         proceed, true to consume it here.
+     * proceed, true to consume it here.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -98,6 +106,7 @@ public class UserFeedActivity extends AppCompatActivity {
 
     /**
      * Metoda na nacitanie fotiek uzivatela a zobrazenie ich do layoutu.
+     *
      * @param userSelected - Meno pouzivatela
      */
     private void loadFeed(String userSelected) {
@@ -109,6 +118,7 @@ public class UserFeedActivity extends AppCompatActivity {
             if (e == null) {
                 for (ParseObject obj : objects) {
                     ParseFile file = (ParseFile) obj.get("image");
+                    Log.i("USER-FEED", file.getUrl());
 
                     if (file == null) {
                         continue;
@@ -117,13 +127,16 @@ public class UserFeedActivity extends AppCompatActivity {
                     file.getDataInBackground((data, e1) -> {
                         if (e1 == null && data != null) {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            ImageView imageView = new ImageView(this);
+                            ImageView imageView = new ImageView(UserFeedActivity.this);
                             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             imageView.setImageBitmap(bitmap);
                             linearLayout.addView(imageView);
+                            Log.i("USER-FEED", "Added to layout");
                         }
-                    });
+                    }, percentDone -> Log.i("USER-FEED", "Progress: " + percentDone));
                 }
+            } else {
+                e.printStackTrace();
             }
         });
     }
